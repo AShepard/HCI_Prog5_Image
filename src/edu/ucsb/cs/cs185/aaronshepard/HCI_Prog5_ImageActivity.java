@@ -4,6 +4,7 @@ import com.example.android.actionbarcompat.ActionBarActivity;
 import com.example.android.actionbarcompat.R;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,6 +15,9 @@ import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
+import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -23,6 +27,7 @@ public class HCI_Prog5_ImageActivity extends ActionBarActivity {
 	private String m_picture_path;
 	private ImageView iv_display;
 	
+	private ScaleGestureDetector m_scale_detector;
 	private TouchView m_touch_view;
     /** Called when the activity is first created. */
     @Override
@@ -33,6 +38,8 @@ public class HCI_Prog5_ImageActivity extends ActionBarActivity {
         m_picture_path = "";
         iv_display = (ImageView)findViewById(R.id.iv_display);
         m_touch_view = null;
+        
+        m_scale_detector = new ScaleGestureDetector(this, new MySimpleOnScaleGestureListener());
     }
     
     @Override
@@ -81,7 +88,8 @@ public class HCI_Prog5_ImageActivity extends ActionBarActivity {
                 break;
 
             case R.id.menu_settings:
-                Toast.makeText(this, "Tapped settings", Toast.LENGTH_SHORT).show();
+            	
+                Toast.makeText(this, "TODO: settings", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.menu_help:
@@ -99,4 +107,28 @@ public class HCI_Prog5_ImageActivity extends ActionBarActivity {
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
+    
+    
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+    	m_scale_detector.onTouchEvent(event);
+	    return true;
+    }
+    
+    //http://android-coding.blogspot.com/2011/09/scalegesturedetector.html
+    public class MySimpleOnScaleGestureListener extends SimpleOnScaleGestureListener {
+     
+	     @Override
+	     public boolean onScale(ScaleGestureDetector detector) {
+	    	 float scaleFactor = detector.getScaleFactor();
+	    	 
+	    	 if(m_touch_view != null) {
+         		m_touch_view.scaleImage(scaleFactor);
+         	} else {
+         		//Toast.makeText(getApplicationContext(), "No Image to scale!", Toast.LENGTH_SHORT).show();
+         	}
+	    	 return true;
+	     }
+     
+     }
 }
