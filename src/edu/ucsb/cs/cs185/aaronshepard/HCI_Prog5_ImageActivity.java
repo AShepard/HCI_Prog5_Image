@@ -6,18 +6,24 @@ import com.example.android.actionbarcompat.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class HCI_Prog5_ImageActivity extends ActionBarActivity {
 	private final static int SELECT_PICTURE = 1;
 	
 	private String m_picture_path;
+	private ImageView iv_display;
+	
+	private TouchView m_touch_view;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,7 +31,8 @@ public class HCI_Prog5_ImageActivity extends ActionBarActivity {
         setContentView(R.layout.main);
         
         m_picture_path = "";
-        
+        iv_display = (ImageView)findViewById(R.id.iv_display);
+        m_touch_view = null;
     }
     
     @Override
@@ -43,8 +50,15 @@ public class HCI_Prog5_ImageActivity extends ActionBarActivity {
             if (requestCode == SELECT_PICTURE) {
                 Uri selectedImageUri = data.getData();
                 m_picture_path = getPath(selectedImageUri);
+                setImage(m_picture_path);
             }
         }
+    }
+    
+    //http://marakana.com/forums/android/examples/98.html
+    public void setImage(String image_path) {
+    	m_touch_view = new TouchView(this, image_path);
+    	setContentView(m_touch_view);
     }
     
     @Override
