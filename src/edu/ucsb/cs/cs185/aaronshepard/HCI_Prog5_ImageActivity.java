@@ -121,9 +121,10 @@ public class HCI_Prog5_ImageActivity extends ActionBarActivity {
 	     @Override
 	     public boolean onScale(ScaleGestureDetector detector) {
 	    	 float scaleFactor = detector.getScaleFactor();
-	    	 
+	    	 float spanX = detector.getFocusX();
+	    	 float spanY = detector.getFocusY();
 	    	 if(m_touch_view != null) {
-         		m_touch_view.scaleImage(scaleFactor);
+         		m_touch_view.scaleImage(scaleFactor, spanX, spanY);
          	} else {
          		//Toast.makeText(getApplicationContext(), "No Image to scale!", Toast.LENGTH_SHORT).show();
          	}
