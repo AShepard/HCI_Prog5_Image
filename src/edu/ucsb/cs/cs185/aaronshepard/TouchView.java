@@ -25,8 +25,22 @@ public class TouchView extends ImageView{
     }
 	
 	public void scaleImage(float factor, float focus_x, float focus_y) {
-		setScaleType(ScaleType.MATRIX);
 		m_matrix.postScale(factor, factor, focus_x, focus_y);
+		
+		invalidate();
+	}
+	
+	public void translateImage(float trans_x, float trans_y) {
+		m_matrix.setTranslate(trans_x, trans_y);
+		invalidate();
+	}
+	
+	public void rotateImage(float focus_x, float focus_y) {
+		//http://stackoverflow.com/questions/4538896/how-to-rotate-image-with-fix-point-along-with-touch-in-android
+		float radians = (float)Math.atan2(focus_x-getWidth()/2, getHeight()/2-focus_y);
+		
+		float degrees = radians * (180 / (float)Math.PI);
+		m_matrix.postRotate(radians, focus_x, focus_y);
 		invalidate();
 	}
 	

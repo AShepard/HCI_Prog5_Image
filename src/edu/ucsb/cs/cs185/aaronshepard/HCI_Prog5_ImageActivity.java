@@ -1,7 +1,6 @@
 package edu.ucsb.cs.cs185.aaronshepard;
 
-import com.example.android.actionbarcompat.ActionBarActivity;
-import com.example.android.actionbarcompat.R;
+import com.example.android.actionbarcompat.*;
 
 import android.app.Activity;
 import android.app.Application;
@@ -40,6 +39,9 @@ public class HCI_Prog5_ImageActivity extends ActionBarActivity {
         m_touch_view = null;
         
         m_scale_detector = new ScaleGestureDetector(this, new MySimpleOnScaleGestureListener());
+        
+        //set blank title
+        setTitle("");
     }
     
     @Override
@@ -111,7 +113,25 @@ public class HCI_Prog5_ImageActivity extends ActionBarActivity {
     
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+    	int action = event.getAction();
     	m_scale_detector.onTouchEvent(event);
+    	if (m_touch_view==null) {
+    		return false;
+    	}
+    	switch(action) {
+    		case MotionEvent.ACTION_DOWN:
+    			//Toast.makeText(getApplicationContext(), "Translate", Toast.LENGTH_SHORT).show();
+    			//m_touch_view.translateImage(event.getX(), event.getY());
+    			break;
+    		case MotionEvent.ACTION_POINTER_2_DOWN:
+    			//Toast.makeText(getApplicationContext(), "Rotate", Toast.LENGTH_SHORT).show();
+    			m_touch_view.rotateImage(event.getX(), event.getY());
+    			break;
+    		case MotionEvent.ACTION_MOVE:
+    			m_touch_view.rotateImage(event.getX(), event.getY());
+    			break;
+    	}
+    	
 	    return true;
     }
     
