@@ -22,9 +22,12 @@ import android.widget.Toast;
 
 public class HCI_Prog5_ImageActivity extends ActionBarActivity {
 	private final static int SELECT_PICTURE = 1;
-	
+	private final static int TRANSLATE = 0;
+	private final static int ROTATE = 1;
 	private String m_picture_path;
 	private ImageView iv_display;
+	
+	private int last_action;
 	
 	private ScaleGestureDetector m_scale_detector;
 	private TouchView m_touch_view;
@@ -114,21 +117,32 @@ public class HCI_Prog5_ImageActivity extends ActionBarActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
     	int action = event.getAction();
-    	m_scale_detector.onTouchEvent(event);
+    	
     	if (m_touch_view==null) {
     		return false;
     	}
+    	
+    	//m_scale_detector.onTouchEvent(event);
+    	
     	switch(action) {
     		case MotionEvent.ACTION_DOWN:
-    			//Toast.makeText(getApplicationContext(), "Translate", Toast.LENGTH_SHORT).show();
-    			//m_touch_view.translateImage(event.getX(), event.getY());
+    			last_action = TRANSLATE;
+    			m_touch_view.setPoint(event.getX(), event.getY());
     			break;
     		case MotionEvent.ACTION_POINTER_2_DOWN:
-    			//Toast.makeText(getApplicationContext(), "Rotate", Toast.LENGTH_SHORT).show();
-    			m_touch_view.rotateImage(event.getX(), event.getY());
+    			last_action = ROTATE;
+    			break;
+    		case MotionEvent.ACTION_POINTER_2_UP:
+    			//if lifting second finger, go back to translate
+    			last_action = TRANSLATE;
     			break;
     		case MotionEvent.ACTION_MOVE:
-    			m_touch_view.rotateImage(event.getX(), event.getY());
+    			if(last_action==TRANSLATE) {
+    				m_touch_view.translateImage(event.getX(), event.getY());
+    			}
+    			else if(last_action==ROTATE) {
+    				m_touch_view.rotateImage(event.getX(), event.getY());
+    			}
     			break;
     	}
     	
@@ -145,10 +159,11 @@ public class HCI_Prog5_ImageActivity extends ActionBarActivity {
 	    	 float spanY = detector.getFocusY();
 	    	 if(m_touch_view != null) {
          		m_touch_view.scaleImage(scaleFactor, spanX, spanY);
+         		return true;
          	} else {
          		//Toast.makeText(getApplicationContext(), "No Image to scale!", Toast.LENGTH_SHORT).show();
          	}
-	    	 return true;
+	    	 return false;
 	     }
      
      }
