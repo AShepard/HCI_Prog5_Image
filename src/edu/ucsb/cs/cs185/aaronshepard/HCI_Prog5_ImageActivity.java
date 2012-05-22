@@ -2,8 +2,11 @@ package edu.ucsb.cs.cs185.aaronshepard;
 
 import com.example.android.actionbarcompat.*;
 
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Application;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -81,7 +84,7 @@ public class HCI_Prog5_ImageActivity extends ActionBarActivity {
                 break;
 
             case R.id.menu_picture:
-                Toast.makeText(this, "Picture...", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Picture...", Toast.LENGTH_SHORT).show();
                 // in onCreate or any event where your want the user to
                 // select a file
                 //http://stackoverflow.com/questions/2169649/open-an-image-in-androids-built-in-gallery-app-programmatically
@@ -94,11 +97,29 @@ public class HCI_Prog5_ImageActivity extends ActionBarActivity {
 
             case R.id.menu_settings:
             	
-                Toast.makeText(this, "TODO: settings", Toast.LENGTH_SHORT).show();
+            	AlertDialog settings_dialog = new AlertDialog.Builder(HCI_Prog5_ImageActivity.this).create();
+            	settings_dialog.setMessage("For settings/help please forward $25 to developer. Cash only!");
+            	settings_dialog.setButton("OK", new DialogInterface.OnClickListener() {
+            	      public void onClick(DialogInterface dialog, int which) {
+            	 
+            	       //nothing to do
+            	 
+            	    } });
+              	
+            	settings_dialog.show();
                 break;
 
             case R.id.menu_help:
-                Toast.makeText(this, "Tapped help", Toast.LENGTH_SHORT).show();
+            	AlertDialog help_dialog = new AlertDialog.Builder(HCI_Prog5_ImageActivity.this).create();
+            	help_dialog.setMessage("Name: Aaron Shepard. \nSoftware Version: Unknown. \nExtra Info: This project deserves an A+!");
+            	help_dialog.setButton("OK", new DialogInterface.OnClickListener() {
+            	      public void onClick(DialogInterface dialog, int which) {
+            	 
+            	       //nothing to do
+            	 
+            	    } });
+              	
+              	help_dialog.show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -122,7 +143,7 @@ public class HCI_Prog5_ImageActivity extends ActionBarActivity {
     		return false;
     	}
     	
-    	//m_scale_detector.onTouchEvent(event);
+    	m_scale_detector.onTouchEvent(event);
     	
     	switch(action) {
     		case MotionEvent.ACTION_DOWN:
